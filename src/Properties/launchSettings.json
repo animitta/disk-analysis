@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FileUtil": {
+      "commandName": "Project",
+      "commandLineArgs": "-d 20 -s 10737418240 C:\\"
+    }
+  }
+}
