@@ -1,4 +1,4 @@
-name: _dotnet_ci
+name: dotnet_ci_disk_analysis
 
 on:
   push:
