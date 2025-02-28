@@ -36,6 +36,14 @@ jobs:
         cd src
         dotnet publish /p:PublishProfile=src/Properties/PublishProfiles/x64.pubxml
 
+    - name: Generate Git tag
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        TAG_NAME="release-${{ github.sha }}"
+        git tag $TAG_NAME
+        git push origin $TAG_NAME
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
