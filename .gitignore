@@ -252,3 +252,6 @@ paket-files/
 
 # WordCount
 src/XuRui.WordCount.ConsoleApp/Logs/logs.txt
+
+# Custom
+artifact/

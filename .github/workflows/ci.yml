@@ -1,0 +1,43 @@
+name: _dotnet_ci
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-2022
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0'
+
+    - name: Restore dependencies
+      run: |
+        cd src
+        dotnet restore
+
+    - name: Build project
+      run: |
+        cd src
+        dotnet build --configuration Release
+
+    - name: Publish project
+      run: |
+        cd src
+        dotnet publish /p:PublishProfile=src/Properties/PublishProfiles/x64.pubxml
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dotnet-publish
+        path: src/artifact/win-x64/disk-analysis.exe
