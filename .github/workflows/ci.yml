@@ -43,5 +43,6 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: src/artifact/win-x64/disk-analysis.exe
+        token: ${{secrets.CL_RELEASE}}
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.CL_RELEASE }}
