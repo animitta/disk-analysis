@@ -41,3 +41,10 @@ jobs:
       with:
         name: dotnet-publish
         path: src/artifact/win-x64/disk-analysis.exe
+
+    - name: GitHub release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: src/artifact/win-x64/disk-analysis.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
