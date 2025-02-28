@@ -37,7 +37,7 @@ jobs:
         dotnet publish /p:PublishProfile=src/Properties/PublishProfiles/x64.pubxml
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: dotnet-publish
         path: src/artifact/win-x64/disk-analysis.exe
