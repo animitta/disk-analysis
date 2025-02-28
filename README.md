@@ -15,7 +15,7 @@
 
     # 构建Windows x64平台的AOT二进制文件
     # 最终生成的文件位于: artifact\win-x64\disk-analysis.exe
-    dotnet publish /p:PublishProfile=src/Properties/PublishProfiles/x64.pubxml
+    dotnet publish /p:PublishProfile=Properties/PublishProfiles/x64.pubxml
     ```
 
 ## 使用

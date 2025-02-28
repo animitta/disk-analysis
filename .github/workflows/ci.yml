@@ -1,12 +1,9 @@
-name: dotnet_ci_disk_analysis
+name: win_x64_release
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    tags:
+      - 'v*'
 
 jobs:
   build:
@@ -34,7 +31,7 @@ jobs:
     - name: Publish project
       run: |
         cd src
-        dotnet publish /p:PublishProfile=src/Properties/PublishProfiles/x64.pubxml
+        dotnet publish /p:PublishProfile=Properties/PublishProfiles/x64.pubxml
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
@@ -43,7 +40,7 @@ jobs:
         path: src/artifact/win-x64/disk-analysis.exe
 
     - name: GitHub release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         files: src/artifact/win-x64/disk-analysis.exe
       env:
