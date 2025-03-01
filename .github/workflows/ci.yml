@@ -35,7 +35,7 @@ jobs:
           path: src/artifact/win-x64/disk-analysis-win-x64.exe
 
   build_ubuntu:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
