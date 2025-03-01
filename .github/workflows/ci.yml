@@ -1,4 +1,4 @@
-name: win_x64_release
+name: release
 
 on:
   push:
@@ -6,43 +6,87 @@ on:
       - 'v*'
 
 jobs:
-  build:
-    runs-on: windows-2022
-
+  build_windows:
+    runs-on: windows-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Set up .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '8.0'
+      - name: Install SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0'
 
-    - name: Restore dependencies
-      run: |
-        cd src
-        dotnet restore
+      - name: Restore
+        run: |
+          cd src
+          dotnet restore
 
-    - name: Build project
-      run: |
-        cd src
-        dotnet build --configuration Release
+      - name: Publish Windows AOT
+        run: |
+          cd src
+          dotnet publish -c Release -r win-x64 --self-contained true -p:PublishAot=true -p:PublishTrimmed=true -p:PublishReadyToRun=true --output artifact/win-x64/
+          rename artifact/win-x64/disk-analysis.exe artifact/win-x64/disk-analysis-win-x64.exe
 
-    - name: Publish project
-      run: |
-        cd src
-        dotnet publish /p:PublishProfile=Properties/PublishProfiles/x64.pubxml
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: disk-analysis-win-x64
+          path: src/artifact/win-x64/disk-analysis-win-x64.exe
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: dotnet-publish
-        path: src/artifact/win-x64/disk-analysis.exe
+  build_ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: GitHub release
-      uses: softprops/action-gh-release@v2
-      with:
-        files: src/artifact/win-x64/disk-analysis.exe
-        token: ${{secrets.CL_RELEASE}}
-      env:
-        GITHUB_TOKEN: ${{ secrets.CL_RELEASE }}
+      - name: Install SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0'
+
+      - name: Restore
+        run: |
+          cd src
+          dotnet restore
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y clang zlib1g-dev
+
+      - name: Publish Ubuntu AOT
+        run: |
+          cd src
+          dotnet publish -c Release -r linux-x64 --self-contained true -p:PublishAot=true -p:PublishTrimmed=true -p:PublishReadyToRun=true --output artifact/linux-x64/
+          mv artifact/linux-x64/disk-analysis artifact/linux-x64/disk-analysis-linux-x64
+
+      - name: Upload Ubuntu Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: disk-analysis-linux-x64
+          path: src/artifact/linux-x64/disk-analysis-linux-x64
+
+  release:
+    needs: [build_windows, build_ubuntu]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Windows Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: disk-analysis-win-x64
+          path: artifact/
+
+      - name: Download Ubuntu Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: disk-analysis-linux-x64
+          path: artifact/
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifact/disk-analysis-win-x64/disk-analysis-win-x64.exe
+            artifact/disk-analysis-linux-x64/disk-analysis-linux-x64
+        env:
+          GITHUB_TOKEN: ${{ secrets.CL_RELEASE }}
