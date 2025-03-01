@@ -57,7 +57,7 @@ jobs:
         run: |
           cd src
           dotnet publish -c Release -r linux-x64 --self-contained true -p:PublishAot=true -p:PublishTrimmed=true -p:PublishReadyToRun=true --output artifact/linux-x64/
-          mv artifact/linux-x64/disk-analysis disk-analysis-linux-x64
+          mv artifact/linux-x64/disk-analysis artifact/linux-x64/disk-analysis-linux-x64
 
       - name: Upload Ubuntu Artifact
         uses: actions/upload-artifact@v4
