@@ -29,7 +29,7 @@ jobs:
           rename artifact/win-x64/disk-analysis.exe artifact/win-x64/disk-analysis-win-x64.exe
 
       - name: Upload Windows Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: disk-analysis-win-x64
           path: src/artifact/win-x64/disk-analysis-win-x64.exe
@@ -60,7 +60,7 @@ jobs:
           mv artifact/linux-x64/disk-analysis artifact/linux-x64/disk-analysis-linux-x64
 
       - name: Upload Ubuntu Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: disk-analysis-linux-x64
           path: src/artifact/linux-x64/disk-analysis-linux-x64
@@ -70,13 +70,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download Windows Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: disk-analysis-win-x64
           path: artifact/
 
       - name: Download Ubuntu Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: disk-analysis-linux-x64
           path: artifact/
