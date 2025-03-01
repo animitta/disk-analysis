@@ -81,12 +81,15 @@ jobs:
           name: disk-analysis-linux-x64
           path: artifact/
 
+      - name: List Artifact
+        run: ls -R artifact/
+
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            artifact/disk-analysis-win-x64/disk-analysis-win-x64.exe
-            artifact/disk-analysis-linux-x64/disk-analysis-linux-x64
+            artifact/disk-analysis-win-x64.exe
+            artifact/disk-analysis-linux-x64
         env:
           GITHUB_TOKEN: ${{ secrets.CL_RELEASE }}
