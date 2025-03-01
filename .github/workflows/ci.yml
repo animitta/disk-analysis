@@ -26,7 +26,7 @@ jobs:
         run: |
           cd src
           dotnet publish -c Release -r win-x64 --self-contained true -p:PublishAot=true -p:PublishTrimmed=true -p:PublishReadyToRun=true --output artifact/win-x64/
-          rename artifact/win-x64/disk-analysis.exe artifact/win-x64/disk-analysis-win-x64.exe
+          Rename-Item ./artifact/win-x64/disk-analysis.exe ./artifact/win-x64/disk-analysis-win-x64.exe
 
       - name: Upload Windows Artifact
         uses: actions/upload-artifact@v4

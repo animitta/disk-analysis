@@ -2,8 +2,9 @@
 	<PropertyGroup>
 		<Nullable>enable</Nullable>
 		<OutputType>Exe</OutputType>
-		<RootNamespace>DiskAnalysis</RootNamespace>
 		<TargetFramework>net8.0</TargetFramework>
+		<AssemblyName>disk-analysis</AssemblyName>
+		<RootNamespace>DiskAnalysis</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>
